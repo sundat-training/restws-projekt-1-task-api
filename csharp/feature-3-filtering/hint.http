@@ -1,0 +1,127 @@
+@baseUrl = http://localhost:3003
+
+###############################################
+# Task Management API - Feature 3: Filtering (C#)
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks (ohne Filter)
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: Filter nach Status
+# ============================================
+###
+
+###
+# 3. Filter by status: pending - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending
+# Erwartet: Nur Tasks mit status="pending"
+
+###
+# 4. Filter by status: completed - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=completed
+# Erwartet: Nur Tasks mit status="completed"
+
+###
+# 5. Filter by status: in_progress - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=in_progress
+# Erwartet: Nur Tasks mit status="in_progress"
+
+###
+# ============================================
+# LÖSUNG: Filter nach Priority
+# ============================================
+###
+
+###
+# 6. Filter by priority: high - LÖSUNG
+GET {{baseUrl}}/api/tasks?priority=high
+# Erwartet: Nur Tasks mit priority="high"
+
+###
+# 7. Filter by priority: medium - LÖSUNG
+GET {{baseUrl}}/api/tasks?priority=medium
+# Erwartet: Nur Tasks mit priority="medium"
+
+###
+# 8. Filter by priority: low - LÖSUNG
+GET {{baseUrl}}/api/tasks?priority=low
+# Erwartet: Nur Tasks mit priority="low"
+
+###
+# ============================================
+# LÖSUNG: Kombinierte Filter
+# ============================================
+###
+
+###
+# 9. Combined filter: status + priority - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=in_progress&priority=high
+# Erwartet: Tasks mit status="in_progress" AND priority="high"
+
+###
+# 10. Combined filter: pending + low priority - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending&priority=low
+# Erwartet: Tasks mit status="pending" AND priority="low"
+
+###
+# ============================================
+# LÖSUNG: Suche
+# ============================================
+###
+
+###
+# 11. Search in title and description - LÖSUNG
+GET {{baseUrl}}/api/tasks?search=TypeScript
+# Erwartet: Tasks mit "TypeScript" in title ODER description
+
+###
+# 12. Search for "API" - LÖSUNG
+GET {{baseUrl}}/api/tasks?search=API
+# Erwartet: Tasks mit "API" im Titel oder Beschreibung
+
+###
+# 13. Search + Filter kombiniert - LÖSUNG
+GET {{baseUrl}}/api/tasks?search=docs&status=pending
+# Erwartet: Tasks mit "docs" im Titel/Description UND status="pending"
+
+###
+# ============================================
+# VALIDE REQUESTS
+# ============================================
+###
+
+###
+# 14. Create a new task - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Test Task for Filtering",
+  "description": "This is a test task",
+  "priority": "medium"
+}
+# Erwartet: 201 Created
+
+###
+# 15. Update task status - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-3
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK

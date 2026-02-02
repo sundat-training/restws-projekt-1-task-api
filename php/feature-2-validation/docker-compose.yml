@@ -1,0 +1,17 @@
+services:
+  task-api-validation-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-validation-php
+    ports:
+      - "3002:3000"
+    volumes:
+      - .:/workspaces/feature-2-validation
+    working_dir: /workspaces/feature-2-validation
+    command: php -S 0.0.0.0:3000 index.php
+    restart: unless-stopped
+
+networks:
+  default:
+    name: restws-network

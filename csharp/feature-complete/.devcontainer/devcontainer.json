@@ -1,0 +1,40 @@
+{
+  "name": "Task API - Feature Complete (C#)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-complete",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-complete,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "humao.rest-client",
+        "ms-dotnettools.csdevkit",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "files.associations": {
+          "*.http": "http"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3006"
+        },
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3006,
+      "label": "Task API - Complete C#",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

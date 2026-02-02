@@ -1,0 +1,17 @@
+services:
+  task-api-basics-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-basics-php
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/workspaces/feature-1-basics
+    working_dir: /workspaces/feature-1-basics
+    command: php -S 0.0.0.0:3000 index.php
+    restart: unless-stopped
+
+networks:
+  default:
+    name: restws-network

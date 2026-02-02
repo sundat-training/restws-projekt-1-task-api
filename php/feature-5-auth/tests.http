@@ -1,0 +1,195 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Auth
+# TEST-SZENARIEN (ca. 1/2 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# AUFGABE 1: POST /api/auth/login implementieren
+# ============================================
+###
+
+###
+# 1. Login mit alice (sollte funktionieren)
+# TODO: Schreibe den POST Request für Login:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+
+###
+# 2. Login mit bob (sollte funktionieren)
+# TODO: Schreibe den POST Request für Login:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+
+
+###
+# 3. Login mit falschem Passwort (401 erwartet)
+# TODO: Schreibe den POST Request:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}
+
+
+###
+# 4. Login mit nicht existierendem User (401 erwartet)
+# TODO: Schreibe den POST Request:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistentuser",
+  "password": "password123"
+}
+
+
+###
+# ============================================
+# AUFGABE 2: Auth-Middleware implementieren
+# ============================================
+###
+
+###
+# 5. GET /api/tasks ohne Auth (401 erwartet)
+# TODO: Schreibe den GET Request ohne Authorization Header:
+GET {{baseUrl}}/api/tasks
+
+
+###
+# 6. GET /api/tasks mit Bearer Token (nur eigene Tasks)
+# TODO: Schreibe den GET Request mit Authorization Header:
+#       Token-Format: "Bearer user-1" für alice
+#       Erwartet: Nur Tasks 1, 2, 3 (alice's Tasks)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+
+
+###
+# ============================================
+# AUFGABE 3: User-Isolation implementieren
+# ============================================
+###
+
+###
+# 7. POST /api/tasks mit Auth (userId wird gesetzt)
+# TODO: Schreibe den POST Request mit Auth:
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "title": "New Task for Alice",
+  "description": "This task belongs to the authenticated user",
+  "priority": "high"
+}
+
+
+###
+# 8. GET /api/tasks als bob (nur eigene Tasks 4, 5)
+# TODO: Schreibe den GET Request mit bob's Token:
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+
+
+###
+# ============================================
+# AUFGABE 4: Eigentümerschaft prüfen bei PUT/DELETE
+# ============================================
+###
+
+###
+# 9. Zugriff auf fremden Task (403 Forbidden)
+# TODO: Schreibe den GET Request für fremden Task:
+#       alice (user-1) versucht auf task-4 zuzugreifen (gehört bob)
+#       Erwartet: 403 Forbidden oder 404 Not Found
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+
+
+###
+# 10. GET /api/tasks/task-4 als alice (403 - gehört bob)
+# TODO: Schreibe den Test für fremden Task-Zugriff:
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+
+
+###
+# 11. PUT fremden Task (403 erwartet)
+# TODO: Schreibe den PUT Request:
+#       bob (user-2) versucht task-1 von alice zu ändern
+#       Erwartet: 403 Forbidden
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+Authorization: Bearer user-2
+
+{
+  "status": "completed"
+}
+
+
+###
+# 12. DELETE fremden Task (403 erwartet)
+# TODO: Schreibe den DELETE Request:
+#       bob (user-2) versucht task-1 von alice zu löschen
+#       Erwartet: 403 Forbidden
+DELETE {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+
+
+###
+# 13. DELETE eigenen Task (204 erwartet)
+# TODO: Schreibe den DELETE Request:
+#       alice (user-1) löscht ihren eigenen Task
+#       Erwartet: 204 No Content
+DELETE {{baseUrl}}/api/tasks/task-3
+Authorization: Bearer user-1
+
+
+###
+# ============================================
+# WEITERE AUTH-TESTS
+# ============================================
+###
+
+###
+# 14. PUT eigenen Task (erfolgreich)
+# TODO: Schreibe den PUT Request für eigenen Task:
+#       alice (user-1) ändert ihren eigenen task-2
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "status": "completed"
+}
+
+
+###
+# 15. GET /api/tasks/task-1 als alice (erfolgreich - gehört ihr)
+# TODO: Schreibe den GET Request für eigenen Task:
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+
+
+###
+# 16. GET /api/tasks/task-4 als bob (erfolgreich - gehört ihm)
+# TODO: Schreibe den GET Request für eigenen Task:
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-2
+

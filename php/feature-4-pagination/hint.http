@@ -1,0 +1,134 @@
+@baseUrl = http://localhost:3004
+
+###############################################
+# Task Management API - Feature 4: Pagination
+# LÖSUNGEN - Vollstaendige Requests
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. GET all tasks (no pagination)
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. GET single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: Pagination implementieren
+# ============================================
+###
+
+###
+# 3. GET tasks with default pagination
+# Default: page=1, limit=10
+GET {{baseUrl}}/api/tasks
+
+###
+# 4. GET page 1 with limit=5
+GET {{baseUrl}}/api/tasks?page=1&limit=5
+
+###
+# ============================================
+# AUFGABE 2: Seitennavigation implementieren
+# ============================================
+###
+
+###
+# 5. GET page 2 with limit=5
+# Offset = (2-1)*5 = 5 -> Task 6-10
+GET {{baseUrl}}/api/tasks?page=2&limit=5
+
+###
+# 6. GET last page (page 3)
+# Bei 15 Tasks: 3 Seiten, letzte Seite hat 5 Tasks
+GET {{baseUrl}}/api/tasks?page=3&limit=5
+
+###
+# ============================================
+# AUFGABE 3: Pagination mit Filter kombinieren
+# ============================================
+###
+
+###
+# 7. Filter AND Pagination combined (status + page)
+# Nur pending Tasks, paginiert
+GET {{baseUrl}}/api/tasks?status=pending&page=1&limit=3
+
+###
+# 8. Filter AND Pagination combined (search + page)
+# Suche nach "TypeScript" mit Pagination
+GET {{baseUrl}}/api/tasks?search=TypeScript&page=1&limit=2
+
+###
+# ============================================
+# BONUS: Validierung und Randfaelle
+# ============================================
+###
+
+###
+# 9. Pagination with invalid page (page=0)
+# Sollte als page=1 behandelt werden
+GET {{baseUrl}}/api/tasks?page=0&limit=5
+
+###
+# 10. Pagination with high limit (limit=100)
+# Sollte alle 15 Tasks zurueckgeben
+GET {{baseUrl}}/api/tasks?page=1&limit=100
+
+###
+# ============================================
+# BONUS: hasNextPage / hasPreviousPage
+# ============================================
+###
+
+###
+# 11. Verify hasNextPage on page 1 and hasPreviousPage=false
+# page=1: hasPreviousPage=false, hasNextPage=true (da mehr Seiten)
+GET {{baseUrl}}/api/tasks?page=1&limit=5
+
+###
+# 12. Verify hasPreviousPage on page 2+
+# page=2: hasPreviousPage=true, hasNextPage=true
+GET {{baseUrl}}/api/tasks?page=2&limit=5
+
+###
+# ============================================
+# CRUD OPERATIONS - Verifikation
+# ============================================
+###
+
+###
+# 13. POST - Create new task
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Task from Tests",
+  "description": "This task was created for testing pagination",
+  "status": "pending",
+  "priority": "medium"
+}
+
+###
+# 14. PUT - Update existing task
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "description": "Updated description for testing",
+  "status": "completed",
+  "priority": "high"
+}
+
+###
+# 15. DELETE - Remove task
+DELETE {{baseUrl}}/api/tasks/task-15
+

@@ -1,0 +1,49 @@
+{
+  "name": "Task API - Feature 1: Basics",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "sh .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-1-basics",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-1-basics,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "humao.rest-client",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "typescript.tsdk": "/workspaces/feature-1-basics/node_modules/typescript/lib",
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/dist": true,
+          "**/.devcontainer": true
+        },
+        "files.associations": {
+          "*.http": "http-request"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3001"
+        },
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        }
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3001,
+      "label": "Task API - Feature 1",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

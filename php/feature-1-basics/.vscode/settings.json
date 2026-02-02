@@ -1,0 +1,8 @@
+{
+  "php.validate.executablePath": "/usr/local/bin/php",
+  "php.validate.run": "onSave",
+  "files.associations": {
+    "*.http": "http"
+  },
+  "editor.formatOnSave": true
+}

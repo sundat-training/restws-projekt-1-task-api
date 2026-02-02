@@ -1,0 +1,40 @@
+{
+  "name": "Task API - Feature 3: Filtering (C#)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-3-filtering",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-3-filtering,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "humao.rest-client",
+        "ms-dotnettools.csdevkit",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "files.associations": {
+          "*.http": "http"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3003"
+        },
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3003,
+      "label": "Task API - Feature 3 C#",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

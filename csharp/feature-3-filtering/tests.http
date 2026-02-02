@@ -1,0 +1,153 @@
+@baseUrl = http://localhost:3003
+
+###############################################
+# Task Management API - Feature 3: Filtering (C#)
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks (ohne Filter)
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE: Filter nach Status implementieren
+# ============================================
+###
+
+###
+# 3. Filter by status: pending
+# LÖSE SELBER:
+#   1. Implementiere Filterung in GetAllTasks Methode
+#   2. Schreibe diesen Test mit Query-Parameter ?status=pending
+#   3. Erwartet: Nur Tasks mit status="pending"
+# TODO: Schreibe den GET Request mit ?status=pending:
+
+
+###
+# 4. Filter by status: completed
+# LÖSE SELBER: Schreibe einen GET Request mit ?status=completed
+# TODO: Schreibe den GET Request mit ?status=completed:
+
+
+###
+# 5. Filter by status: in_progress
+# LÖSE SELBER: Schreibe einen GET Request mit ?status=in_progress
+# TODO: Schreibe den GET Request mit ?status=in_progress:
+
+
+###
+# ============================================
+# AUFGABE: Filter nach Priority implementieren
+# ============================================
+###
+
+###
+# 6. Filter by priority: high
+# LÖSE SELBER:
+#   1. Erweitere die Filterung um ?priority=
+#   2. Schreibe diesen Test mit ?priority=high
+# TODO: Schreibe den GET Request mit ?priority=high:
+
+
+###
+# 7. Filter by priority: medium
+# LÖSE SELBER: Schreibe einen GET Request mit ?priority=medium
+# TODO: Schreibe den GET Request mit ?priority=medium:
+
+
+###
+# 8. Filter by priority: low
+# LÖSE SELBER: Schreibe einen GET Request mit ?priority=low
+# TODO: Schreibe den GET Request mit ?priority=low:
+
+
+###
+# ============================================
+# AUFGABE: Kombinierte Filter implementieren
+# ============================================
+###
+
+###
+# 9. Combined filter: status + priority
+# LÖSE SELBER:
+#   1. Kombiniere beide Filter mit AND
+#   2. Schreibe einen Test mit ?status=in_progress&priority=high
+# TODO: Schreibe den GET Request mit kombinierten Filtern:
+
+
+###
+# 10. Combined filter: pending + low priority
+# LÖSE SELBER: Teste ?status=pending&priority=low
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE: Suche implementieren
+# ============================================
+###
+
+###
+# 11. Search in title and description
+# LÖSE SELBER:
+#   1. Implementiere ?search= mit SQL LIKE
+#   2. Suche sollte in title UND description suchen
+#   3. Verwende % als Wildcard
+#   4. Schreibe einen Test mit ?search=TypeScript
+# TODO: Schreibe den GET Request mit ?search=TypeScript:
+
+
+###
+# 12. Search for "API"
+# LÖSE SELBER: Schreibe einen GET Request mit ?search=API
+# Sollte Tasks finden mit "API" im Titel oder Beschreibung
+# TODO: Schreibe den GET Request mit ?search=API:
+
+
+###
+# 13. Search + Filter kombiniert
+# LÖSE SELBER: Kombiniere Suche mit Filter
+# z.B. ?search=docs&status=pending
+# TODO: Schreibe den GET Request mit Suche + Filter:
+
+
+###
+# ============================================
+# VALIDE REQUESTS (Sollten funktionieren)
+# ============================================
+###
+
+###
+# 14. Create a new task (für Test-Daten)
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Test Task for Filtering",
+  "description": "This is a test task",
+  "priority": "medium"
+}
+# Erwartet: 201 Created
+
+###
+# 15. Update task status
+PUT {{baseUrl}}/api/tasks/task-3
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK

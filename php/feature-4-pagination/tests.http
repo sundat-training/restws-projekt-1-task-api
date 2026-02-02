@@ -1,0 +1,164 @@
+@baseUrl = http://localhost:3004
+
+###############################################
+# Task Management API - Feature 4: Pagination
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz aus Feature 1, 2 & 3
+# ============================================
+###
+
+###
+# 1. GET all tasks (no pagination)
+# Bereits implementiert mit Filterung - dient als Referenz
+# Sollte alle Tasks zurueckgeben mit pagination Wrapper
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. GET single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: Pagination implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 3. GET tasks with default pagination
+# LÖSE SELBER:
+#   1. Implementiere Pagination in GET /api/tasks
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks ohne Parameter
+#      - Erwartet: Response mit "data" Array und "pagination" Objekt
+#      - Default: page=1, limit=10
+# TODO: Schreibe den GET Request:
+
+
+###
+# 4. GET page 1 with limit=5
+# LÖSE SELBER:
+#   1. Implementiere ?limit= Parameter
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?page=1&limit=5
+#      - Erwartet: 5 Tasks auf Seite 1
+# TODO: Schreibe den GET Request mit Query Parametern:
+
+
+###
+# ============================================
+# AUFGABE 2: Seitennavigation implementieren
+# ============================================
+###
+
+###
+# 5. GET page 2 with limit=5
+# LÖSE SELBER:
+#   1. Implementiere ?page= Parameter mit offset Berechnung
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?page=2&limit=5
+#      - Erwartet: Naechste 5 Tasks (Tasks 6-10)
+# TODO: Schreibe den GET Request:
+
+
+###
+# 6. GET last page (page 3)
+# LÖSE SELBER: Teste die letzte Seite
+# Bei 15 Tasks und limit=5 sollte Seite 3 die letzten 5 Tasks haben
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE 3: Pagination mit Filter kombinieren
+# ============================================
+###
+
+###
+# 7. Filter AND Pagination combined (status + page)
+# LÖSE SELBER:
+#   1. Implementiere Pagination ZUSAETZLICH zu bestehender Filterung
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?status=pending&page=1&limit=3
+#      - Erwartet: Nur pending Tasks, paginiert
+# TODO: Schreibe den GET Request mit Filter und Pagination:
+
+
+###
+# 8. Filter AND Pagination combined (search + page)
+# LÖSE SELBER: Kombiniere Suche mit Pagination
+# Beispiel: ?search=TypeScript&page=1&limit=2
+# TODO: Schreibe den GET Request mit Suche und Pagination:
+
+
+###
+# ============================================
+# BONUS: Validierung und Randfaelle
+# ============================================
+###
+
+###
+# 9. Pagination with invalid page (page=0)
+# LÖSE SELBER: Teste Randfall page=0
+# Sollte automatisch auf page=1 korrigiert werden
+# TODO: Schreibe den GET Request:
+
+
+###
+# 10. Pagination with high limit (limit=100)
+# LÖSE SELBER: Teste limit groesser als Anzahl Tasks
+# Beispiel: ?page=1&limit=100 bei 15 Tasks
+# Sollte alle 15 Tasks zurueckgeben (capped oder erlaubt)
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# BONUS: hasNextPage / hasPreviousPage berechnen
+# ============================================
+###
+
+###
+# 11. Verify hasNextPage on page 1 and hasPreviousPage=false
+# LÖSE SELBER: Teste hasPreviousPage=false auf Seite 1
+# Bei 15 Tasks, limit=5: page=1 sollte hasPreviousPage=false haben
+# TODO: Schreibe den GET Request:
+
+
+###
+# 12. Verify hasPreviousPage on page 2+
+# LÖSE SELBER: Teste hasPreviousPage=true auf Seite 2+
+# page=2 sollte hasPreviousPage=true haben
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# CRUD OPERATIONS - Verifikation
+# ============================================
+###
+
+###
+# 13. POST - Create new task
+# LÖSE SELBER: Erstelle einen neuen Task
+# Pruefe ob Pagination Response korrekt aktualisiert wird
+# TODO: Schreibe den POST Request mit JSON Body:
+
+
+###
+# 14. PUT - Update existing task
+# LÖSE SELBER: Aktualisiere einen existierenden Task
+# Pruefe ob der aktualisierte Task in Pagination erscheint
+# TODO: Schreibe den PUT Request:
+
+
+###
+# 15. DELETE - Remove task
+# LÖSE SELBER: Loesche einen Task
+# Pruefe ob Pagination totalItems reduziert wird
+# TODO: Schreibe den DELETE Request:
+

@@ -1,0 +1,17 @@
+services:
+  task-api-filtering-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-filtering-php
+    ports:
+      - "3003:3000"
+    volumes:
+      - .:/workspaces/feature-3-filtering
+    working_dir: /workspaces/feature-3-filtering
+    command: php -S 0.0.0.0:3000 index.php
+    restart: unless-stopped
+
+networks:
+  default:
+    name: restws-network

@@ -1,0 +1,49 @@
+{
+  "name": "Task API - Feature 4: Pagination",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-4-pagination",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-4-pagination,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "humao.rest-client",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "typescript.tsdk": "/workspaces/feature-4-pagination/node_modules/typescript/lib",
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/dist": true,
+          "**/.devcontainer": true
+        },
+        "files.associations": {
+          "*.http": "http-request"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3004"
+        },
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        }
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3004,
+      "label": "Task API - Feature 4",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

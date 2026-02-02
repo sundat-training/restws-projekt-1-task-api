@@ -1,0 +1,21 @@
+services:
+  task-api-pagination:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-pagination
+    ports:
+      - "3004:3000"
+    volumes:
+      - .:/workspaces/feature-4-pagination
+      - node_modules:/workspaces/feature-4-pagination/node_modules
+    working_dir: /workspaces/feature-4-pagination
+    command: sh -c "npm install && npm run dev"
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+
+networks:
+  default:
+    name: restws-network

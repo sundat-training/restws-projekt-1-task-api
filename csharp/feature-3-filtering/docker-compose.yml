@@ -1,0 +1,21 @@
+services:
+  task-api-filtering-csharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-filtering-csharp
+    ports:
+      - "3003:3000"
+    volumes:
+      - .:/workspaces/feature-3-filtering
+      - dotnet_packages:/root/.nuget/packages
+    working_dir: /workspaces/feature-3-filtering
+    command: dotnet run --urls http://0.0.0.0:3000
+    restart: unless-stopped
+
+volumes:
+  dotnet_packages:
+
+networks:
+  default:
+    name: restws-network

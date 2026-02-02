@@ -1,0 +1,201 @@
+@baseUrl = http://localhost:3006
+
+###############################################
+# Task Management API - Feature Complete (C#)
+# VOLLSTÄNDIGE LÖSUNG - Alle Features
+###############################################
+
+###
+# ============================================
+# AUTHENTICATION
+# ============================================
+###
+
+###
+# 1. Register new user
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "newuser",
+  "password": "password123"
+}
+
+###
+# 2. Login as alice
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+###
+# 3. Login as bob
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+
+###
+# 4. Get user profile (alice)
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer user-1
+
+###
+# 5. Get user profile (bob)
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer user-2
+
+###
+# ============================================
+# CRUD OPERATIONS
+# ============================================
+###
+
+###
+# 6. Get all tasks (alice)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+
+###
+# 7. Get all tasks (bob)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+
+###
+# 8. Get single task (alice's task)
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+
+###
+# 9. Create new task (alice)
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "title": "Complete C# API",
+  "description": "Finish the REST API implementation",
+  "priority": "high"
+}
+
+###
+# 10. Update task (alice)
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+# 11. Delete task (alice)
+DELETE {{baseUrl}}/api/tasks/task-3
+Authorization: Bearer user-1
+
+###
+# ============================================
+# FILTERING & PAGINATION
+# ============================================
+
+###
+# 12. Filter by status
+GET {{baseUrl}}/api/tasks?status=pending
+Authorization: Bearer user-1
+
+###
+# 13. Filter by priority
+GET {{baseUrl}}/api/tasks?priority=high
+Authorization: Bearer user-1
+
+###
+# 14. Search tasks
+GET {{baseUrl}}/api/tasks?search=API
+Authorization: Bearer user-1
+
+###
+# 15. Combined filters
+GET {{baseUrl}}/api/tasks?status=pending&priority=high
+Authorization: Bearer user-1
+
+###
+# 16. Pagination
+GET {{baseUrl}}/api/tasks?page=1&limit=2
+Authorization: Bearer user-1
+
+###
+# 17. Full combination
+GET {{baseUrl}}/api/tasks?status=pending&search=task&page=1&limit=5
+Authorization: Bearer user-1
+
+###
+# ============================================
+# AUTHORIZATION (User Isolation)
+# ============================================
+
+###
+# 18. Bob tries to access alice's task (403 Forbidden)
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+
+###
+# 19. Bob tries to update alice's task (403 Forbidden)
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+# 20. Bob tries to delete alice's task (403 Forbidden)
+DELETE {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+
+###
+# 21. Without authentication (401 Unauthorized)
+GET {{baseUrl}}/api/tasks
+
+###
+# ============================================
+# VALIDATION ERRORS
+# ============================================
+
+###
+# 22. Create task without title (400 Bad Request)
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "description": "Missing title"
+}
+
+###
+# 23. Create task with invalid priority (400 Bad Request)
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "title": "Test",
+  "description": "Test",
+  "priority": "invalid"
+}
+
+###
+# 24. Login with wrong credentials (401 Unauthorized)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}

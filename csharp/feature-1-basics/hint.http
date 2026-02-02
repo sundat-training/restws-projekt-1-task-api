@@ -1,0 +1,137 @@
+@baseUrl = http://localhost:3001
+
+###############################################
+# Task Management API - Feature 1: Basics (C#)
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: POST /api/tasks
+# ============================================
+###
+
+###
+# 3. Create a new task - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Neuer Task",
+  "description": "Beschreibung des Tasks",
+  "priority": "high"
+}
+# Erwartet: 201 Created
+# {
+#   "id": "guid-hier",
+#   "title": "Neuer Task",
+#   "description": "Beschreibung des Tasks",
+#   "status": "pending",
+#   "priority": "high",
+#   "createdAt": "2024-01-15T10:30:00.000Z",
+#   "updatedAt": "2024-01-15T10:30:00.000Z"
+# }
+
+###
+# ============================================
+# LÖSUNG: PUT /api/tasks/{id}
+# ============================================
+###
+
+###
+# 4. Update task status - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK
+
+###
+# 5. Update task with multiple fields - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "status": "in_progress",
+  "priority": "low"
+}
+# Erwartet: 200 OK
+
+###
+# ============================================
+# LÖSUNG: DELETE /api/tasks/{id}
+# ============================================
+###
+
+###
+# 6. Delete a task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-3
+# Erwartet: 204 No Content
+
+###
+# ============================================
+# FEHLERBEHANDLUNG
+# ============================================
+###
+
+###
+# 7. Get non-existent task
+GET {{baseUrl}}/api/tasks/non-existent-id
+# Erwartet: 404 Not Found
+
+###
+# 8. Update non-existent task
+PUT {{baseUrl}}/api/tasks/non-existent-id
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 404 Not Found
+
+###
+# 9. Delete non-existent task
+DELETE {{baseUrl}}/api/tasks/non-existent-id
+# Erwartet: 404 Not Found
+
+###
+# 10. Update with empty body
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{}
+# Erwartet: 400 Bad Request
+
+###
+# ============================================
+# BONUS
+# ============================================
+###
+
+###
+# 11. Create task without optional priority
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task ohne Priority",
+  "description": "Priority sollte 'medium' sein"
+}
+# Erwartet: 201 Created mit priority="medium"

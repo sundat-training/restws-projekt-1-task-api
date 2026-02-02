@@ -1,0 +1,172 @@
+@baseUrl = http://localhost:3006
+@token = {{$dotenv AUTH_TOKEN}}
+
+###############################################
+# Task Management API - Feature Complete
+# Test-Szenarien (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# AUTH TESTS
+# ============================================
+###
+
+###
+# 1. Register a new user - AUFGABE
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "newuser"
+  # Ergänze: "email": "newuser@example.com"
+  # Ergänze: "password": "password123"
+}
+# Erwartet: 201 Created mit user + token
+
+###
+# 2. Login with existing user
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password123"
+}
+
+###
+# 3. Login with invalid password - AUFGABE
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "wrongpassword"
+}
+# Erwartet: 401 Unauthorized
+
+###
+# 4. Get user profile (requires token)
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer {{token}}
+
+###
+# 5. Access protected route without token - AUFGABE
+GET {{baseUrl}}/api/tasks
+# Ergänze Authorization Header
+# Erwartet: 401 Unauthorized
+
+###
+# ============================================
+# TASK CRUD TESTS
+# ============================================
+###
+
+###
+# 6. Get all tasks (authenticated)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer {{token}}
+
+###
+# 7. Get tasks with status filter
+GET {{baseUrl}}/api/tasks?status=pending
+Authorization: Bearer {{token}}
+
+###
+# 8. Get tasks with priority filter - AUFGABE
+GET {{baseUrl}}/api/tasks?priority=high
+Authorization: Bearer {{token}}
+# Ergänze: Füge ?status=pending hinzu
+
+###
+# 9. Get tasks with search filter
+GET {{baseUrl}}/api/tasks?search=TypeScript
+Authorization: Bearer {{token}}
+
+###
+# 10. Get tasks with pagination
+GET {{baseUrl}}/api/tasks?page=1&limit=2
+Authorization: Bearer {{token}}
+
+###
+# 11. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer {{token}}
+
+###
+# 12. Get non-existent task - AUFGABE
+GET {{baseUrl}}/api/tasks/non-existent-id
+Authorization: Bearer {{token}}
+# Erwartet: 404 Not Found
+
+###
+# 13. Create a new task
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Complete Lab Exercise",
+  "description": "Finish all REST API exercises",
+  "priority": "high"
+}
+
+###
+# 14. Create task with validation error - AUFGABE
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": ""
+  # Ergänze: "description": "Test"
+  # Erwartet: 400 Bad Request
+}
+
+###
+# 15. Update task status
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+# 16. Update task with invalid status - AUFGABE
+PUT {{baseUrl}}/api/tasks/task-2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "invalid_status"
+}
+# Erwartet: 400 Bad Request
+
+###
+# 17. Delete a task
+DELETE {{baseUrl}}/api/tasks/task-3
+Authorization: Bearer {{token}}
+
+###
+# 18. Delete non-existent task - AUFGABE
+DELETE {{baseUrl}}/api/tasks/non-existent-id
+Authorization: Bearer {{token}}
+# Erwartet: 404 Not Found
+
+###
+# ============================================
+# ADVANCED TESTS
+# ============================================
+###
+
+###
+# 19. Combined filters
+GET {{baseUrl}}/api/tasks?status=pending&priority=high&page=1&limit=5
+Authorization: Bearer {{token}}
+
+###
+# 20. Search with no results
+GET {{baseUrl}}/api/tasks?search=xyz123nonexistent
+Authorization: Bearer {{token}}

@@ -1,0 +1,157 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Auth
+# TEST-SZENARIEN (ca. 1/2 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# REFERENZ: Login Tests (bereits funktionsfähig)
+# ============================================
+###
+
+###
+# 1. Login with valid credentials
+# BEREITS FUNKTIONSFÄHIG - Zeigt wie Login funktioniert
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK mit { userId, username }
+
+###
+# 2. Login with invalid credentials
+# BEREITS FUNKTIONSFÄHIG - Zeigt Fehlerbehandlung
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}
+# Erwartet: 401 Unauthorized
+
+###
+# 3. Login with non-existent user
+# BEREITS FUNKTIONSFÄHIG - Zeigt Fehler bei unbekanntem User
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistentuser",
+  "password": "password123"
+}
+# Erwartet: 401 Unauthorized
+
+###
+# ============================================
+# REFERENZ: Auth-Middleware Tests (bereits funktionsfähig)
+# ============================================
+###
+
+###
+# 4. Get tasks without auth
+# BEREITS FUNKTIONSFÄHIG - Zeigt 401 ohne Auth
+GET {{baseUrl}}/api/tasks
+# Erwartet: 401 Unauthorized
+
+###
+# 5. Get tasks with valid auth
+# BEREITS FUNKTIONSFÄHIG - Zeigt erfolgreichen Auth-Request
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+# Erwartet: 200 OK mit Tasks des Users
+
+###
+# 6. Create task with auth
+# BEREITS FUNKTIONSFÄHIG - Zeigt POST mit Auth
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "title": "New Task for Alice",
+  "description": "This task belongs to the authenticated user",
+  "priority": "high"
+}
+# Erwartet: 201 Created mit userId des eingeloggten Users
+
+###
+# ============================================
+# AUFGABE 3: User-Isolation implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 7. User can only see own tasks
+# LÖSE SELBER:
+#   1. Implementiere Filter: Nur eigene Tasks anzeigen
+#   2. Schreibe diesen Test:
+#      - Login als "alice" (user-1)
+#      - GET /api/tasks
+#      - Erwartet: Nur Tasks wo userId = "user-1"
+#      - Nicht die Tasks von bob (user-2)
+# TODO: Schreibe den kompletten Test-Flow (Login + Get Tasks):
+
+
+###
+# 8. User cannot access other user's task
+# LÖSE SELBER:
+#   1. Implementiere Prüfung bei GET /api/tasks/:id
+#   2. Schreibe diesen Test:
+#      - Login als "alice" (user-1)
+#      - GET /api/tasks/task-4 (gehört bob, user-2)
+#      - Erwartet: 403 Forbidden oder 404 Not Found
+# TODO: Schreibe den Test für fremden Task:
+
+
+###
+# 9. User cannot modify other user's task
+# LÖSE SELBER:
+#   1. Implementiere Prüfung bei PUT/DELETE
+#   2. Schreibe diesen Test:
+#      - Login als "bob" (user-2)
+#      - PUT /api/tasks/task-1 (gehört alice, user-1)
+#      - Erwartet: 403 Forbidden
+# TODO: Schreibe den Test:
+
+
+###
+# ============================================
+# BONUS: Register Endpunkt implementieren
+# ============================================
+###
+
+###
+# 10. Register new user
+# LÖSE SELBER: Implementiere Registrierung
+# POST /api/auth/register
+# JSON Body: { "username": "...", "password": "..." }
+# TODO: Schreibe den POST Request für neue Registrierung:
+
+
+###
+# 11. Register with existing username
+# LÖSE SELBER: Teste Fehler bei doppeltem Username
+# Erwartet: 409 Conflict
+# TODO: Schreibe den Test:
+
+
+###
+# ============================================
+# BONUS: Password Hashing implementieren
+# ============================================
+
+###
+# 12. Verify passwords are hashed
+# LÖSE SELBER: Installiere bcrypt und hashe Passwörter
+# Tipps:
+#   - npm install bcrypt
+#   - npm install -D @types/bcrypt
+#   - Verwende bcrypt.hash() beim Register
+#   - Verwende bcrypt.compare() beim Login
+# TODO: Implementiere Password Hashing

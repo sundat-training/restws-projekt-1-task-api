@@ -1,0 +1,21 @@
+services:
+  task-api-auth-csharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-auth-csharp
+    ports:
+      - "3005:3000"
+    volumes:
+      - .:/workspaces/feature-5-auth
+      - dotnet_packages:/root/.nuget/packages
+    working_dir: /workspaces/feature-5-auth
+    command: dotnet run --urls http://0.0.0.0:3000
+    restart: unless-stopped
+
+volumes:
+  dotnet_packages:
+
+networks:
+  default:
+    name: restws-network

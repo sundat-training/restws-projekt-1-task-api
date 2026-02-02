@@ -1,0 +1,144 @@
+@baseUrl = http://localhost:3004
+
+###############################################
+# Task Management API - Feature 4: Pagination (C#)
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# 2. Get all tasks (ohne Pagination - aktuell ohne Wrapper)
+# Zeigt aktuellen Zustand (noch nicht paginiert)
+GET {{baseUrl}}/api/tasks
+
+###
+# ============================================
+# AUFGABE: Pagination implementieren
+# ============================================
+###
+
+###
+# 3. Default Pagination (ohne Parameter)
+# LÖSE SELBER:
+#   1. Implementiere Pagination in GetAllTasks
+#   2. Ohne Parameter sollte page=1, limit=10 gelten
+#   3. Response sollte data + pagination Objekt enthalten
+# TODO: Teste die API ohne Pagination-Parameter
+
+
+###
+# 4. Pagination mit limit=5
+# LÖSE SELBER: Schreibe einen GET Request mit ?limit=5
+# Erwartet: 5 Tasks + pagination Objekt mit totalItems=15, totalPages=3
+# TODO: Schreibe den GET Request mit ?limit=5:
+
+
+###
+# 5. Seite 2 mit limit=5
+# LÖSE SELBER: Schreibe einen GET Request für Seite 2
+# Erwartet: Tasks 6-10, hasPreviousPage=true, hasNextPage=true
+# TODO: Schreibe den GET Request für page=2, limit=5:
+
+
+###
+# 6. Seite 3 (letzte Seite)
+# LÖSE SELBER: Schreibe einen GET Request für Seite 3
+# Erwartet: Tasks 11-15, hasNextPage=false
+# TODO: Schreibe den GET Request für page=3, limit=5:
+
+
+###
+# ============================================
+# AUFGABE: Pagination + Filter kombinieren
+# ============================================
+###
+
+###
+# 7. Filter + Pagination
+# LÖSE SELBER: Kombiniere ?status=pending mit ?page=1&limit=3
+# Erwartet: Gefilterte Tasks mit eigener Pagination (weniger totalItems)
+# TODO: Schreibe den GET Request:
+
+
+###
+# 8. Suche + Pagination
+# LÖSE SELBER: Kombiniere ?search=API mit ?page=1&limit=2
+# TODO: Schreibe den GET Request:
+
+
+###
+# 9. Komplex: Filter + Suche + Pagination
+# LÖSE SELBER: ?status=pending&search=setup&page=1&limit=2
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE: Randfälle behandeln
+# ============================================
+###
+
+###
+# 10. Ungültige Seite (page=0)
+# LÖSE SELBER: Teste page=0
+# Erwartet: Sollte als page=1 behandelt werden
+# TODO: Schreibe den GET Request mit page=0:
+
+
+###
+# 11. Seite außerhalb des Bereichs
+# LÖSE SELBER: Teste page=999 (mehr als verfügbare Seiten)
+# Erwartet: Sollte letzte Seite zurückgeben oder leere data
+# TODO: Schreibe den GET Request:
+
+
+###
+# 12. Limit zu hoch
+# LÖSE SELBER: Teste limit=1000
+# Erwartet: Sollte auf max Limit (z.B. 100) begrenzt werden
+# oder Validation Error
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# REFERENZ: CRUD Operationen (funktionieren bereits)
+# ============================================
+###
+
+###
+# 13. Create a new task
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Paginated Task",
+  "description": "Testing pagination with new tasks",
+  "priority": "medium"
+}
+# Erwartet: 201 Created
+
+###
+# 14. Update task
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+# Erwartet: 200 OK
+
+###
+# 15. Delete task
+DELETE {{baseUrl}}/api/tasks/task-15
+# Erwartet: 204 No Content

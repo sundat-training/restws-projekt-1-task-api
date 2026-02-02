@@ -1,0 +1,221 @@
+@baseUrl = http://localhost:3002
+
+###############################################
+# Task Management API - Feature 2: Validation
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: POST Validierung
+# ============================================
+###
+
+###
+# 3. Create valid task
+# LÖSUNG: Sollte erfolgreich sein
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Valid Task",
+  "description": "This task has all required fields",
+  "priority": "high"
+}
+# Erwartet: 201 Created mit neuem Task
+# {
+#   "id": "uuid-hier",
+#   "title": "New Valid Task",
+#   "description": "This task has all required fields",
+#   "status": "pending",
+#   "priority": "high",
+#   "createdAt": "...",
+#   "updatedAt": "..."
+# }
+
+###
+# 4. Create task without title
+# LÖSUNG: Validierung erfordert title
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Missing title"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     {
+#       "type": "field",
+#       "msg": "Title is required",
+#       "path": "title",
+#       "location": "body"
+#     }
+#   ]
+# }
+
+###
+# 5. Create task with empty title
+# LÖSUNG: Leerer String ist nicht erlaubt
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "Empty title"
+}
+# Erwartet: 400 Bad Request - "Title is required"
+
+###
+# 6. Create task with title too long (>200 chars)
+# LÖSUNG: Längen-Validierung
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt und sollte einen Validierungsfehler auslösen weil er einfach viel zu lang ist und die Grenze überschreitet",
+  "description": "Test description"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     {
+#       "type": "field",
+#       "msg": "Title max 200 chars",
+#       "path": "title",
+#       "location": "body"
+#     }
+#   ]
+# }
+
+###
+# 7. Create task with invalid priority
+# LÖSUNG: Enum-Validierung
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task with invalid priority",
+  "description": "Description",
+  "priority": "invalid"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     {
+#       "type": "field",
+#       "msg": "Invalid priority",
+#       "path": "priority",
+#       "location": "body"
+#     }
+#   ]
+# }
+
+###
+# 8. Create task without description
+# LÖSUNG: Validierung erfordert description
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task without description"
+}
+# Erwartet: 400 Bad Request - "Description is required"
+
+###
+# ============================================
+# LÖSUNG: PUT Validierung
+# ============================================
+###
+
+###
+# 9. Update task with valid status
+# LÖSUNG: Sollte erfolgreich sein
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK mit aktualisiertem Task
+
+###
+# 10. Update task with invalid status
+# LÖSUNG: Enum-Validierung für status
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "status": "not_a_valid_status"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     {
+#       "type": "field",
+#       "msg": "Invalid status",
+#       "path": "status",
+#       "location": "body"
+#     }
+#   ]
+# }
+
+###
+# 11. Update task with title too long
+# LÖSUNG: Längen-Validierung
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt und sollte einen Validierungsfehler auslösen weil er einfach viel zu lang ist und die Grenze überschreitet"
+}
+# Erwartet: 400 Bad Request - "Title max 200 chars"
+
+###
+# ============================================
+# LÖSUNG: Mehrere Fehler
+# ============================================
+###
+
+###
+# 12. Create task with multiple validation errors
+# LÖSUNG: Alle Fehler werden zurückgegeben
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "priority": "wrong"
+}
+# Erwartet: 400 Bad Request mit allen Fehlern
+# {
+#   "errors": [
+#     { "type": "field", "msg": "Title is required", "path": "title", "location": "body" },
+#     { "type": "field", "msg": "Description is required", "path": "description", "location": "body" },
+#     { "type": "field", "msg": "Invalid priority", "path": "priority", "location": "body" }
+#   ]
+# }
+
+###
+# 13. Update with empty body
+# LÖSUNG: Entscheidung: Leerer Body = keine Änderungen = 200 OK
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{}
+# Erwartet: 200 OK (keine Änderungen) oder 400 Bad Request (je nach Implementierung)

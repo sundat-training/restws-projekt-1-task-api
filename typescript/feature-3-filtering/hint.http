@@ -1,0 +1,123 @@
+@baseUrl = http://localhost:3003
+
+###############################################
+# Task Management API - Feature 3: Filtering
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: Filter nach Status
+# ============================================
+###
+
+###
+# 3. Get all tasks (no filter)
+# LÖSUNG: Sollte alle 5 Tasks zurückgeben
+GET {{baseUrl}}/api/tasks
+
+###
+# 4. Filter by status - PENDING
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=pending
+# Erwartet: Nur Tasks mit status="pending" (z.B. task-3, task-4)
+
+###
+# 5. Filter by status - COMPLETED
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=completed
+# Erwartet: Nur Tasks mit status="completed" (z.B. task-1)
+
+###
+# 6. Filter by status - IN_PROGRESS
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=in_progress
+# Erwartet: Nur Tasks mit status="in_progress" (z.B. task-2, task-5)
+
+###
+# ============================================
+# LÖSUNG: Filter nach Priority
+# ============================================
+###
+
+###
+# 7. Filter by priority - HIGH
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?priority=high
+# Erwartet: Nur Tasks mit priority="high" (z.B. task-1, task-2)
+
+###
+# 8. Filter by priority - MEDIUM
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?priority=medium
+# Erwartet: Nur Tasks mit priority="medium" (z.B. task-3, task-5)
+
+###
+# 9. Filter by priority - LOW
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?priority=low
+# Erwartet: Nur Tasks mit priority="low" (z.B. task-4)
+
+###
+# ============================================
+# LÖSUNG: Kombinierte Filter
+# ============================================
+###
+
+###
+# 10. Filter by status AND priority
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=pending&priority=high
+# Erwartet: Nur Tasks mit status="pending" UND priority="high"
+# Hinweis: Je nach Daten könnte dies 0 oder mehrere Treffer geben
+
+###
+# 11. Filter by status AND priority (other combination)
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=in_progress&priority=medium
+# Erwartet: Tasks die beide Bedingungen erfüllen
+
+###
+# ============================================
+# LÖSUNG: Suche
+# ============================================
+###
+
+###
+# 12. Search in title and description
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?search=TypeScript
+# Erwartet: Tasks die "TypeScript" enthalten (case-insensitive)
+
+###
+# 13. Search with no results
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?search=xyz123nonexistent
+# Erwartet: Leeres Array []
+
+###
+# ============================================
+# LÖSUNG: Kombination Filter + Suche
+# ============================================
+
+###
+# 14. Filter AND Search combined
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=pending&search=API
+# Erwartet: Tasks mit status="pending" die "API" enthalten

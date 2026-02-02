@@ -1,0 +1,153 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Auth
+# LÖSUNGEN (funktionierende Requests)
+###############################################
+
+###
+# ============================================
+# Login Tests
+# ============================================
+###
+
+###
+# 1. Login mit alice (funktioniert)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+###
+# 2. Login mit bob (funktioniert)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+
+###
+# 3. Login mit falschem Passwort (401)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}
+
+###
+# 4. Login mit nicht existierendem User (401)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistentuser",
+  "password": "password123"
+}
+
+###
+# ============================================
+# Auth-Middleware Tests
+# ============================================
+###
+
+###
+# 5. GET /api/tasks ohne Auth (401)
+GET {{baseUrl}}/api/tasks
+
+###
+# 6. GET /api/tasks mit Bearer Token (alice's Tasks)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+
+###
+# ============================================
+# User-Isolation Tests
+# ============================================
+###
+
+###
+# 7. POST /api/tasks mit Auth (userId wird gesetzt)
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "title": "New Task for Alice",
+  "description": "This task belongs to the authenticated user",
+  "priority": "high"
+}
+
+###
+# 8. GET /api/tasks als bob (nur eigene Tasks)
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+
+###
+# ============================================
+# Eigentümerschaft Tests
+# ============================================
+###
+
+###
+# 9. Zugriff auf fremden Task (403 Forbidden)
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+
+###
+# 10. GET /api/tasks/task-4 als alice (403)
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+
+###
+# 11. PUT fremden Task (403)
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+Authorization: Bearer user-2
+
+{
+  "status": "completed"
+}
+
+###
+# 12. DELETE fremden Task (403)
+DELETE {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+
+###
+# 13. DELETE eigenen Task (204)
+DELETE {{baseUrl}}/api/tasks/task-3
+Authorization: Bearer user-1
+
+###
+# ============================================
+# Weitere Auth-Tests
+# ============================================
+###
+
+###
+# 14. PUT eigenen Task (erfolgreich)
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "status": "completed"
+}
+
+###
+# 15. GET /api/tasks/task-1 als alice (erfolgreich)
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+
+###
+# 16. GET /api/tasks/task-4 als bob (erfolgreich)
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-2
+

@@ -1,0 +1,21 @@
+services:
+  task-api-complete-csharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-complete-csharp
+    ports:
+      - "3006:3000"
+    volumes:
+      - .:/workspaces/feature-complete
+      - dotnet_packages:/root/.nuget/packages
+    working_dir: /workspaces/feature-complete
+    command: dotnet run --urls http://0.0.0.0:3000
+    restart: unless-stopped
+
+volumes:
+  dotnet_packages:
+
+networks:
+  default:
+    name: restws-network

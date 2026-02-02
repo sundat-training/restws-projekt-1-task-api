@@ -1,0 +1,148 @@
+@baseUrl = http://localhost:3002
+
+###############################################
+# Task Management API - Feature 2: Validation
+# LÖSUNGEN - Alle Tests funktionieren
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz aus Feature 1
+# ============================================
+###
+
+###
+# 1. Get all tasks
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: POST Validierung
+# ============================================
+###
+
+###
+# 3. Create valid task
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Valid Task",
+  "description": "This task has all required fields",
+  "priority": "high"
+}
+
+###
+# 4. Create task without title
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "description": "This task is missing the title field"
+}
+
+###
+# 5. Create task with empty title
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "This task has an empty title"
+}
+
+###
+# 6. Create task with title too long (>200 chars)
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt und sollte einen Validierungsfehler auslösen weil der Titel einfach viel zu viele Zeichen enthält und die Limitation von 200 Zeichen bei weitem überschreitet mit Absicht um den Test zu bestehen",
+  "description": "Test description"
+}
+
+###
+# ============================================
+# AUFGABE 2: POST Enum-Validierung
+# ============================================
+###
+
+###
+# 7. Create task with invalid priority
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Valid Title",
+  "description": "Valid description",
+  "priority": "invalid"
+}
+
+###
+# 8. Create task without description
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task without description"
+}
+
+###
+# ============================================
+# AUFGABE 3: PUT Validierung
+# ============================================
+###
+
+###
+# 9. Update task with valid status
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+# 10. Update task with invalid status
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "status": "not_a_valid_status"
+}
+
+###
+# 11. Update task with title too long
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt."
+}
+
+###
+# ============================================
+# BONUS: Mehrere Fehler gleichzeitig
+# ============================================
+###
+
+###
+# 12. Create task with multiple validation errors
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "priority": "invalid",
+  "title": "A" . str_repeat("B", 201)
+}
+
+###
+# 13. Update with empty body
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{}

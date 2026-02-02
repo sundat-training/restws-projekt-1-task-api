@@ -1,0 +1,180 @@
+@baseUrl = http://localhost:3002
+
+###############################################
+# Task Management API - Feature 2: Validation (C#)
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: POST Validierung
+# ============================================
+###
+
+###
+# 3. Create task without title - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Missing title field"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "title", "message": "Title is required" }
+#   ]
+# }
+
+###
+# 4. Create task without description - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task without description"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "description", "message": "Description is required" }
+#   ]
+# }
+
+###
+# 5. Create task with title too long - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt und sollte einen Validierungsfehler auslösen weil er einfach viel zu lang ist und die Grenze sprengt",
+  "description": "Test description"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "title", "message": "Title must not exceed 200 characters" }
+#   ]
+# }
+
+###
+# 6. Create task with invalid priority - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Valid Title",
+  "description": "Valid description",
+  "priority": "urgent"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "priority", "message": "Priority must be low, medium, or high" }
+#   ]
+# }
+
+###
+# ============================================
+# LÖSUNG: PUT Validierung
+# ============================================
+###
+
+###
+# 7. Update task with invalid status - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "invalid_status"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "status", "message": "Status must be pending, in_progress, or completed" }
+#   ]
+# }
+
+###
+# 8. Update task with title too long - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "title": "Dieser Titel ist viel zu lang und überschreitet die maximal erlaubten 200 Zeichen deutlich. Das ist nicht erlaubt und sollte einen Validierungsfehler auslösen weil er einfach viel zu lang ist und die Grenze sprengt"
+}
+# Erwartet: 400 Bad Request
+# {
+#   "errors": [
+#     { "field": "title", "message": "Title must not exceed 200 characters" }
+#   ]
+# }
+
+###
+# ============================================
+# LÖSUNG: DELETE Validierung
+# ============================================
+###
+
+###
+# 9. Delete non-existent task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/non-existent-id
+# Erwartet: 404 Not Found
+# { "error": "Task not found" }
+
+###
+# ============================================
+# VALIDE REQUESTS
+# ============================================
+###
+
+###
+# 10. Create valid task - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Valid Task",
+  "description": "This is a valid task description",
+  "priority": "high"
+}
+# Erwartet: 201 Created
+# {
+#   "id": "uuid-hier",
+#   "title": "Valid Task",
+#   "description": "This is a valid task description",
+#   "status": "pending",
+#   "priority": "high",
+#   "createdAt": "2024-01-15T10:30:00.000Z",
+#   "updatedAt": "2024-01-15T10:30:00.000Z"
+# }
+
+###
+# 11. Update task with valid data - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed",
+  "priority": "low"
+}
+# Erwartet: 200 OK
+
+###
+# 12. Delete existing task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-3
+# Erwartet: 204 No Content

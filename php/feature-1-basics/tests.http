@@ -1,0 +1,154 @@
+@baseUrl = http://localhost:3001
+
+###############################################
+# Task Management API - Feature 1: Basics
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: POST implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 3. Create a new task
+# LÖSE SELBER: 
+#   1. Implementiere POST /api/tasks in index.php
+#   2. Schreibe diesen Test:
+#      - POST an /api/tasks
+#      - JSON Body mit title, description, priority
+#      - Erwartet: 201 Created mit uuid, status="pending"
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+# TODO: Schreibe den Request Body hier:
+# {
+#   "title": "...",
+#   "description": "...",
+#   "priority": "..."
+# }
+
+###
+# ============================================
+# AUFGABE 2: PUT implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 4. Update task status
+# LÖSE SELBER:
+#   1. Implementiere PUT /api/tasks/:id in index.php
+#   2. Schreibe diesen Test:
+#      - PUT an /api/tasks/task-1
+#      - JSON Body mit status: "completed"
+#      - Erwartet: 200 OK mit aktualisiertem Task
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+# TODO: Schreibe den Request Body hier:
+# {
+#   "status": "..."
+# }
+
+###
+# 5. Update task with multiple fields
+# Bereits vorgegeben - muss funktionieren wenn PUT implementiert ist
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "status": "in_progress",
+  "priority": "low"
+}
+
+###
+# ============================================
+# AUFGABE 3: DELETE implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 6. Delete a task
+# LÖSE SELBER:
+#   1. Implementiere DELETE /api/tasks/:id in index.php
+#   2. Schreibe diesen Test:
+#      - DELETE an /api/tasks/task-3
+#      - Erwartet: 204 No Content
+# TODO: Schreibe den DELETE Request hier:
+
+
+###
+# ============================================
+# FEHLERBEHANDLUNG (Referenz-Tests)
+# ============================================
+###
+
+###
+# 7. Get non-existent task
+# Testet: 404 bei ungültiger ID
+GET {{baseUrl}}/api/tasks/non-existent-id
+# Erwartet: 404 Not Found
+
+###
+# 8. Update non-existent task
+# Testet: 404 bei PUT auf nicht-existenten Task
+PUT {{baseUrl}}/api/tasks/non-existent-id
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 404 Not Found
+
+###
+# 9. Delete non-existent task
+# Testet: 404 bei DELETE auf nicht-existenten Task
+DELETE {{baseUrl}}/api/tasks/non-existent-id
+# Erwartet: 404 Not Found
+
+###
+# 10. Update with empty body
+# Testet: PUT ohne Felder gibt 400
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{}
+# Erwartet: 400 Bad Request
+
+###
+# ============================================
+# BONUS
+# ============================================
+###
+
+###
+# 11. Create task without optional priority
+# Testet: default priority = "medium"
+# LÖSE SELBER: Schreibe einen POST Test ohne priority Feld
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+# TODO: Schreibe den Request Body OHNE priority:
+# {
+#   "title": "...",
+#   "description": "..."
+# }
+# Erwartet: 201 Created mit priority="medium"

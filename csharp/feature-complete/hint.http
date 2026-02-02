@@ -1,0 +1,222 @@
+@baseUrl = http://localhost:3006
+
+###############################################
+# Task Management API - Feature Complete (C#)
+# LÖSUNGEN - Alle Features
+###############################################
+
+###
+# ============================================
+# AUTHENTICATION
+# ============================================
+
+###
+# 1. Register - LÖSUNG
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "newuser",
+  "password": "password123"
+}
+# Erwartet: 201 Created mit userId, username, token
+
+###
+# 2. Login alice - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK
+# {
+#   "userId": "user-1",
+#   "username": "alice",
+#   "token": "..."
+# }
+
+###
+# 3. Login bob - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+# Erwartet: 200 OK
+
+###
+# 4. Profile alice - LÖSUNG
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer user-1
+# Erwartet: { "userId": "user-1", "username": "alice" }
+
+###
+# 5. Profile bob - LÖSUNG
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer user-2
+# Erwartet: { "userId": "user-2", "username": "bob" }
+
+###
+# ============================================
+# CRUD - LÖSUNGEN
+# ============================================
+
+###
+# 6. Get tasks alice - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+# Erwartet: 3 Tasks
+
+###
+# 7. Get tasks bob - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+# Erwartet: 2 Tasks
+
+###
+# 8. Get single task - LÖSUNG
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+# Erwartet: Task Details
+
+###
+# 9. Create task - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "title": "Complete C# API",
+  "description": "Finish the REST API implementation",
+  "priority": "high"
+}
+# Erwartet: 201 Created
+
+###
+# 10. Update task - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK
+
+###
+# 11. Delete task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-3
+Authorization: Bearer user-1
+# Erwartet: 204 No Content
+
+###
+# ============================================
+# FILTERING & PAGINATION - LÖSUNGEN
+# ============================================
+
+###
+# 12. Filter status - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending
+Authorization: Bearer user-1
+
+###
+# 13. Filter priority - LÖSUNG
+GET {{baseUrl}}/api/tasks?priority=high
+Authorization: Bearer user-1
+
+###
+# 14. Search - LÖSUNG
+GET {{baseUrl}}/api/tasks?search=API
+Authorization: Bearer user-1
+
+###
+# 15. Combined filters - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending&priority=high
+Authorization: Bearer user-1
+
+###
+# 16. Pagination - LÖSUNG
+GET {{baseUrl}}/api/tasks?page=1&limit=2
+Authorization: Bearer user-1
+
+###
+# 17. Full combo - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending&search=task&page=1&limit=5
+Authorization: Bearer user-1
+
+###
+# ============================================
+# AUTHORIZATION - LÖSUNGEN (403)
+# ============================================
+
+###
+# 18. Bob accesses alice's task - LÖSUNG
+GET {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+# Erwartet: 403 Forbidden
+
+###
+# 19. Bob updates alice's task - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 403 Forbidden
+
+###
+# 20. Bob deletes alice's task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+# Erwartet: 403 Forbidden
+
+###
+# 21. No auth - LÖSUNG
+GET {{baseUrl}}/api/tasks
+# Erwartet: 401 Unauthorized
+
+###
+# ============================================
+# VALIDATION - LÖSUNGEN (400)
+# ============================================
+
+###
+# 22. Missing title - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "description": "Missing title"
+}
+# Erwartet: 400 Bad Request
+
+###
+# 23. Invalid priority - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "title": "Test",
+  "description": "Test",
+  "priority": "invalid"
+}
+# Erwartet: 400 Bad Request
+
+###
+# 24. Wrong credentials - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}
+# Erwartet: 401 Unauthorized

@@ -1,0 +1,21 @@
+services:
+  task-api-validation-csharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-validation-csharp
+    ports:
+      - "3002:3000"
+    volumes:
+      - .:/workspaces/feature-2-validation
+      - dotnet_packages:/root/.nuget/packages
+    working_dir: /workspaces/feature-2-validation
+    command: dotnet run --urls http://0.0.0.0:3000
+    restart: unless-stopped
+
+volumes:
+  dotnet_packages:
+
+networks:
+  default:
+    name: restws-network

@@ -1,0 +1,201 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Auth
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# LÖSUNG: Login
+# ============================================
+###
+
+###
+# 1. Login with valid credentials
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK
+# {
+#   "userId": "user-1",
+#   "username": "alice"
+# }
+
+###
+# 2. Login with invalid credentials
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "wrongpassword"
+}
+# Erwartet: 401 Unauthorized
+# { "error": "Invalid credentials" }
+
+###
+# 3. Login with non-existent user
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistent",
+  "password": "password123"
+}
+# Erwartet: 401 Unauthorized
+
+###
+# ============================================
+# LÖSUNG: Geschützte Endpunkte
+# ============================================
+###
+
+###
+# 4. Get tasks without auth
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks
+# Erwartet: 401 Unauthorized
+# { "error": "Authentication required" }
+
+###
+# 5. Get tasks with valid auth
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1-token
+# Oder: Authorization: Basic alice:password123
+# Erwartet: 200 OK mit Tasks des eingeloggten Users
+
+###
+# 6. Create task with auth
+# LÖSUNG:
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer user-1-token
+
+{
+  "title": "New Task for Alice",
+  "description": "This task belongs to alice",
+  "priority": "high"
+}
+# Erwartet: 201 Created
+# Der Task hat automatisch userId = user-1
+
+###
+# ============================================
+# LÖSUNG: User-Isolation
+# ============================================
+###
+
+###
+# 7. User can only see own tasks
+# LÖSUNG: Login als alice, dann GET
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+###
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1-token
+# Erwartet: Nur Tasks mit userId = "user-1"
+# (task-1, task-2, task-3)
+
+###
+# 8. User cannot access other user's task
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+###
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1-token
+# Erwartet: 403 Forbidden oder 404 Not Found
+# (task-4 gehört bob)
+
+###
+# 9. User cannot modify other user's task
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password123"
+}
+
+###
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+Authorization: Bearer user-2-token
+
+{
+  "status": "completed"
+}
+# Erwartet: 403 Forbidden
+# (task-1 gehört alice)
+
+###
+# ============================================
+# LÖSUNG: Register
+# ============================================
+###
+
+###
+# 10. Register new user
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "charlie",
+  "password": "securepassword"
+}
+# Erwartet: 201 Created
+# { "userId": "...", "username": "charlie" }
+
+###
+# 11. Register with existing username
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "somepassword"
+}
+# Erwartet: 409 Conflict
+# { "error": "Username already exists" }
+
+###
+# ============================================
+# LÖSUNG: Password Hashing (mit bcrypt)
+# ============================================
+
+###
+# 12. Verify login works with hashed passwords
+# LÖSUNG:
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Auch nach dem Hashing sollte der Login funktionieren
+# weil bcrypt.compare() verwendet wird

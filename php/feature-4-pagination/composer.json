@@ -1,0 +1,16 @@
+{
+  "name": "task-api-feature-4-pagination",
+  "version": "1.0.0",
+  "description": "Task API - Feature 4: Pagination (PHP)",
+  "type": "project",
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
+    "ext-json": "*"
+  },
+  "scripts": {
+    "start": "php -S 0.0.0.0:3000 index.php",
+    "dev": "php -S 0.0.0.0:3000 index.php"
+  }
+}

@@ -1,0 +1,21 @@
+services:
+  task-api-basics-csharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-basics-csharp
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/workspaces/feature-1-basics
+      - dotnet_packages:/root/.nuget/packages
+    working_dir: /workspaces/feature-1-basics
+    command: dotnet run --urls http://0.0.0.0:3000
+    restart: unless-stopped
+
+volumes:
+  dotnet_packages:
+
+networks:
+  default:
+    name: restws-network

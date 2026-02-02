@@ -1,0 +1,17 @@
+services:
+  task-api-pagination-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-pagination-php
+    ports:
+      - "3004:3000"
+    volumes:
+      - .:/workspaces/feature-4-pagination
+    working_dir: /workspaces/feature-4-pagination
+    command: php -S 0.0.0.0:3000 index.php
+    restart: unless-stopped
+
+networks:
+  default:
+    name: restws-network

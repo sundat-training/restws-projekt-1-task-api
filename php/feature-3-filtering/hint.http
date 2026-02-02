@@ -1,0 +1,108 @@
+@baseUrl = http://localhost:3003
+
+###############################################
+# Task Management API - Feature 3: Filtering
+# LOSUNGEN - Vollstandige Requests
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz aus Feature 1 & 2
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: Filter nach Status
+# ============================================
+###
+
+###
+# 3. Get all tasks (no filter)
+GET {{baseUrl}}/api/tasks
+
+###
+# 4. Filter by status - PENDING
+GET {{baseUrl}}/api/tasks?status=pending
+
+###
+# 5. Filter by status - COMPLETED
+GET {{baseUrl}}/api/tasks?status=completed
+
+###
+# ============================================
+# AUFGABE 2: Filter nach Priority
+# ============================================
+###
+
+###
+# 6. Filter by priority - HIGH
+GET {{baseUrl}}/api/tasks?priority=high
+
+###
+# 7. Filter by priority - LOW
+GET {{baseUrl}}/api/tasks?priority=low
+
+###
+# ============================================
+# AUFGABE 3: Kombinierte Filter
+# ============================================
+###
+
+###
+# 8. Filter by status AND priority
+GET {{baseUrl}}/api/tasks?status=pending&priority=high
+
+###
+# 9. Filter by status AND priority (other combination)
+GET {{baseUrl}}/api/tasks?status=in_progress&priority=medium
+
+###
+# ============================================
+# BONUS: Suche
+# ============================================
+###
+
+###
+# 10. Search in title and description
+GET {{baseUrl}}/api/tasks?search=API
+
+###
+# 11. Search with no results
+GET {{baseUrl}}/api/tasks?search=nothinghere
+
+###
+# ============================================
+# BONUS: Kombination aus Filter und Suche
+# ============================================
+
+###
+# 12. Filter AND Search combined
+GET {{baseUrl}}/api/tasks?status=pending&search=docs
+
+###
+# ============================================
+# VALIDATION (Feature 2) - funktioniert weiterhin
+# ============================================
+
+###
+# 13. POST with validation
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Neuer Task",
+  "description": "Dieser Task hat eine Beschreibung",
+  "status": "pending",
+  "priority": "low"
+}

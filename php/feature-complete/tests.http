@@ -1,0 +1,130 @@
+@baseUrl = http://localhost:3006
+
+# =============================================================================
+# Task Management API - Test Suite (Feature Complete)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Authentication Tests
+# -----------------------------------------------------------------------------
+
+# 1: Login als alice
+# @name loginAlice
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+
+###
+
+# 2: Login als bob
+# @name loginBob
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+
+###
+
+# 3: Login mit falschen Daten (401)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "falschespasswort"
+}
+
+###
+
+# -----------------------------------------------------------------------------
+# Tasks Tests
+# -----------------------------------------------------------------------------
+
+# 4: GET alle Tasks mit Auth
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+
+###
+
+# 5: GET Tasks mit Pagination (page=1, limit=2)
+GET {{baseUrl}}/api/tasks?page=1&limit=2
+Authorization: Bearer user-1
+
+###
+
+# 6: GET Tasks mit Filter (status=pending)
+GET {{baseUrl}}/api/tasks?status=pending
+Authorization: Bearer user-1
+
+###
+
+# 7: GET Tasks mit kombiniertem Filter (status + priority)
+GET {{baseUrl}}/api/tasks?status=pending&priority=high
+Authorization: Bearer user-1
+
+###
+
+# 8: GET Tasks mit Search
+GET {{baseUrl}}/api/tasks?search=documentation
+Authorization: Bearer user-1
+
+###
+
+# 9: GET einzelnen Task
+GET {{baseUrl}}/api/tasks/1
+Authorization: Bearer user-1
+
+###
+
+# 10: POST neuen Task
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "title": "API Dokumentation erstellen",
+  "description": "Vollständige API Dokumentation für das Projekt",
+  "priority": "high"
+}
+
+###
+
+# 11: PUT Task aktualisieren
+PUT {{baseUrl}}/api/tasks/1
+Content-Type: application/json
+Authorization: Bearer user-1
+
+{
+  "title": "API Dokumentation aktualisieren",
+  "status": "in_progress"
+}
+
+###
+
+# 12: DELETE Task
+DELETE {{baseUrl}}/api/tasks/1
+Authorization: Bearer user-1
+
+###
+
+# -----------------------------------------------------------------------------
+# Security Tests
+# -----------------------------------------------------------------------------
+
+# 13: Zugriff ohne Auth (401)
+GET {{baseUrl}}/api/tasks
+
+###
+
+# 14: Zugriff auf fremden Task (404)
+GET {{baseUrl}}/api/tasks/100
+Authorization: Bearer user-2
+
+###

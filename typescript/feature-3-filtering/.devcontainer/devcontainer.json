@@ -1,0 +1,49 @@
+{
+  "name": "Task API - Feature 3: Filtering",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-3-filtering",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-3-filtering,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "humao.rest-client",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "typescript.tsdk": "/workspaces/feature-3-filtering/node_modules/typescript/lib",
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/dist": true,
+          "**/.devcontainer": true
+        },
+        "files.associations": {
+          "*.http": "http-request"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3003"
+        },
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        }
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3003,
+      "label": "Task API - Feature 3",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

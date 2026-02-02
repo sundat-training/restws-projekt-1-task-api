@@ -1,0 +1,164 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Authentication (C#)
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# AUFGABE: Login implementieren
+# ============================================
+###
+
+###
+# 1. Login als alice
+# LÖSE SELBER:
+#   1. Implementiere POST /api/auth/login
+#   2. Schreibe diesen Test mit username: "alice", password: "password123"
+#   3. Erwartet: 200 OK mit { userId: "user-1", username: "alice" }
+# TODO: Schreibe den POST Request für Login:
+
+
+###
+# 2. Login als bob
+# LÖSE SELBER: Schreibe einen Login-Test für bob
+# Credentials: username: "bob", password: "password456"
+# TODO: Schreibe den POST Request:
+
+
+###
+# 3. Login mit falschen Credentials
+# LÖSE SELBER: Teste Login mit falschem Passwort
+# Erwartet: 401 Unauthorized
+# TODO: Schreibe den POST Request mit falschem Passwort:
+
+
+###
+# ============================================
+# AUFGABE: Auth Middleware
+# ============================================
+###
+
+###
+# 4. GET /api/tasks ohne Auth
+# LÖSE SELBER:
+#   1. Implementiere Auth-Middleware
+#   2. Request ohne Authorization Header sollte 401 zurückgeben
+# TODO: Schreibe den GET Request OHNE Authorization Header:
+
+
+###
+# 5. GET /api/tasks mit Auth (alice)
+# LÖSE SELBER: Schreibe einen Request MIT Authorization Header
+# Header: Authorization: Bearer user-1
+# TODO: Schreibe den GET Request:
+
+
+###
+# 6. GET /api/tasks mit Auth (bob)
+# LÖSE SELBER: Teste als bob
+# Header: Authorization: Bearer user-2
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE: User-Isolation
+# ============================================
+###
+
+###
+# 7. Alice sieht nur ihre Tasks
+# LÖSE SELBER:
+#   1. Implementiere User-Filter in GET /api/tasks
+#   2. Alice sollte nur 3 Tasks sehen (task-1, 2, 3)
+#   3. Teste mit Authorization: Bearer user-1
+# TODO: Schreibe den GET Request:
+
+
+###
+# 8. Bob sieht nur seine Tasks
+# LÖSE SELBER: Bob sollte nur 2 Tasks sehen (task-4, 5)
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE: Autorisierung (PUT/DELETE)
+# ============================================
+###
+
+###
+# 9. Bob versucht Alice' Task zu ändern (FORBIDDEN)
+# LÖSE SELBER:
+#   1. Implementiere Autorisierung in PUT
+#   2. Bob (user-2) versucht task-1 (von Alice) zu ändern
+#   3. Erwartet: 403 Forbidden
+# TODO: Schreibe den PUT Request:
+
+
+###
+# 10. Alice versucht Bob's Task zu löschen (FORBIDDEN)
+# LÖSE SELBER: Alice (user-1) versucht task-4 (von Bob) zu löschen
+# Erwartet: 403 Forbidden
+# TODO: Schreibe den DELETE Request:
+
+
+###
+# 11. Alice ändert ihren eigenen Task (OK)
+# LÖSE SELBER: Alice ändert task-1
+# Erwartet: 200 OK
+# TODO: Schreibe den PUT Request:
+
+
+###
+# ============================================
+# AUFGABE: POST mit User-Zuordnung
+# ============================================
+###
+
+###
+# 12. Create Task als Alice
+# LÖSE SELBER:
+#   1. Implementiere User-Zuordnung in POST
+#   2. Erstelle Task als Alice (user-1)
+#   3. Der Task sollte automatisch Alice zugeordnet werden
+# TODO: Schreibe den POST Request:
+
+
+###
+# 13. Create Task als Bob
+# LÖSE SELBER: Erstelle Task als Bob (user-2)
+# TODO: Schreibe den POST Request:
+
+
+###
+# ============================================
+# REFERENZ: Öffentliche Endpunkte
+# ============================================
+###
+
+###
+# 14. Login Endpunkt (öffentlich)
+# Dieser Endpunkt sollte OHNE Auth funktionieren
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK
+
+###
+# ============================================
+# BONUS: Weitere Tests
+# ============================================
+
+###
+# 15. GET einzelnen Task (fremder Task = 403)
+# Alice versucht task-4 (von Bob) zu lesen
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+# Erwartet: 403 Forbidden

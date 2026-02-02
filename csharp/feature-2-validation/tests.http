@@ -1,0 +1,136 @@
+@baseUrl = http://localhost:3002
+
+###############################################
+# Task Management API - Feature 2: Validation (C#)
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE: POST Validierung
+# ============================================
+###
+
+###
+# 3. Create task without title
+# LÖSE SELBER:
+#   1. Implementiere POST-Validierung in TasksController.cs
+#   2. Schreibe diesen Test:
+#      - POST an /api/tasks
+#      - JSON Body OHNE title
+#      - Erwartet: 400 Bad Request
+# TODO: Schreibe den POST Request OHNE title:
+
+
+###
+# 4. Create task without description
+# LÖSE SELBER:
+#   1. Validierung sollte description als Pflichtfeld prüfen
+#   2. Schreibe einen POST Test ohne description Feld
+# TODO: Schreibe den POST Request OHNE description:
+
+
+###
+# 5. Create task with title too long
+# LÖSE SELBER:
+#   1. Validierung sollte max 200 Zeichen prüfen
+#   2. Schreibe einen POST Test mit einem sehr langen title (>200 Zeichen)
+# TIPP: Verwende einen String mit 201+ Zeichen
+# TODO: Schreibe den POST Request mit zu langem title:
+
+
+###
+# 6. Create task with invalid priority
+# LÖSE SELBER:
+#   1. Validierung sollte priority auf "low", "medium", "high" prüfen
+#   2. Schreibe einen POST Test mit priority = "urgent" (ungültig)
+# TODO: Schreibe den POST Request mit ungültigem priority:
+
+
+###
+# ============================================
+# AUFGABE: PUT Validierung
+# ============================================
+###
+
+###
+# 7. Update task with invalid status
+# LÖSE SELBER:
+#   1. Implementiere PUT-Validierung in TasksController.cs
+#   2. Schreibe einen PUT Test mit ungültigem status
+# TIPP: Gültige Werte: "pending", "in_progress", "completed"
+# TODO: Schreibe den PUT Request mit ungültigem status:
+
+
+###
+# 8. Update task with title too long
+# LÖSE SELBER:
+#   1. PUT-Validierung sollte auch max 200 Zeichen prüfen
+#   2. Schreibe einen PUT Test zu task-1 mit zu langem title
+# TODO: Schreibe den PUT Request mit zu langem title:
+
+
+###
+# ============================================
+# AUFGABE: DELETE Validierung
+# ============================================
+###
+
+###
+# 9. Delete non-existent task
+# LÖSE SELBER:
+#   1. Implementiere DELETE mit Existenz-Prüfung
+#   2. Schreibe einen DELETE Test für eine nicht-existierende ID
+#   3. Erwartet: 404 Not Found
+# TODO: Schreibe den DELETE Request für non-existent-id:
+
+
+###
+# ============================================
+# VALIDE REQUESTS (Sollten funktionieren)
+# ============================================
+###
+
+###
+# 10. Create valid task
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Valid Task",
+  "description": "This is a valid task description",
+  "priority": "high"
+}
+# Erwartet: 201 Created
+
+###
+# 11. Update task with valid data
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed",
+  "priority": "low"
+}
+# Erwartet: 200 OK
+
+###
+# 12. Delete existing task
+DELETE {{baseUrl}}/api/tasks/task-3
+# Erwartet: 204 No Content

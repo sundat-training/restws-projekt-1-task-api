@@ -1,0 +1,125 @@
+@baseUrl = http://localhost:3004
+
+###############################################
+# Task Management API - Feature 4: Pagination (C#)
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get single task by ID
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# 2. Get all tasks (ohne Pagination)
+GET {{baseUrl}}/api/tasks
+
+###
+# ============================================
+# LÖSUNG: Pagination
+# ============================================
+###
+
+###
+# 3. Default Pagination - LÖSUNG
+GET {{baseUrl}}/api/tasks
+# Erwartet:
+# {
+#   "data": [...],
+#   "pagination": { "page": 1, "limit": 10, "totalItems": 15, "totalPages": 2, ... }
+# }
+
+###
+# 4. Pagination mit limit=5 - LÖSUNG
+GET {{baseUrl}}/api/tasks?limit=5
+# Erwartet: 5 Tasks, totalPages=3
+
+###
+# 5. Seite 2 mit limit=5 - LÖSUNG
+GET {{baseUrl}}/api/tasks?page=2&limit=5
+# Erwartet: Tasks 6-10, hasPreviousPage=true, hasNextPage=true
+
+###
+# 6. Seite 3 (letzte Seite) - LÖSUNG
+GET {{baseUrl}}/api/tasks?page=3&limit=5
+# Erwartet: Tasks 11-15, hasNextPage=false
+
+###
+# ============================================
+# LÖSUNG: Pagination + Filter
+# ============================================
+###
+
+###
+# 7. Filter + Pagination - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending&page=1&limit=3
+# Erwartet: Pending Tasks mit Pagination (weniger totalItems)
+
+###
+# 8. Suche + Pagination - LÖSUNG
+GET {{baseUrl}}/api/tasks?search=API&page=1&limit=2
+# Erwartet: Tasks mit "API" in title/description, paginiert
+
+###
+# 9. Komplex: Filter + Suche + Pagination - LÖSUNG
+GET {{baseUrl}}/api/tasks?status=pending&search=setup&page=1&limit=2
+# Erwartet: Pending Tasks mit "setup", paginiert
+
+###
+# ============================================
+# LÖSUNG: Randfälle
+# ============================================
+###
+
+###
+# 10. Ungültige Seite (page=0) - LÖSUNG
+GET {{baseUrl}}/api/tasks?page=0&limit=5
+# Erwartet: Sollte als page=1 behandelt werden
+
+###
+# 11. Seite außerhalb des Bereichs - LÖSUNG
+GET {{baseUrl}}/api/tasks?page=999&limit=5
+# Erwartet: Leere data oder letzte Seite
+
+###
+# 12. Limit zu hoch - LÖSUNG
+GET {{baseUrl}}/api/tasks?limit=1000
+# Erwartet: Auf max Limit begrenzt oder 400 Bad Request
+
+###
+# ============================================
+# VALIDE REQUESTS
+# ============================================
+###
+
+###
+# 13. Create a new task - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Paginated Task",
+  "description": "Testing pagination with new tasks",
+  "priority": "medium"
+}
+# Erwartet: 201 Created
+
+###
+# 14. Update task - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+# Erwartet: 200 OK
+
+###
+# 15. Delete task - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-15
+# Erwartet: 204 No Content

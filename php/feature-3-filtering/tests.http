@@ -1,0 +1,152 @@
+@baseUrl = http://localhost:3003
+
+###############################################
+# Task Management API - Feature 3: Filtering
+# TEST-SZENARIEN (ca. 1/3 als AUFGABE)
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz aus Feature 1 & 2
+# ============================================
+###
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# AUFGABE 1: Filter nach Status implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 3. Get all tasks (no filter)
+# Sollte alle 5 Tasks zurueckgeben
+GET {{baseUrl}}/api/tasks
+
+###
+# 4. Filter by status - PENDING
+# LOSE SELBER:
+#   1. Implementiere Filterung mit ?status= Parameter in GET /api/tasks
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?status=pending
+#      - Erwartet: Nur Tasks mit status="pending"
+# TODO: Schreibe den GET Request mit Query Parameter:
+
+
+###
+# 5. Filter by status - COMPLETED
+# LOSE SELBER:
+#   1. Erweitere die Implementierung fur ?status=completed
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?status=completed
+#      - Erwartet: Nur Tasks mit status="completed"
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE 2: Filter nach Priority implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 6. Filter by priority - HIGH
+# LOSE SELBER:
+#   1. Implementiere Filterung mit ?priority= Parameter
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?priority=high
+#      - Erwartet: Nur Tasks mit priority="high"
+# TODO: Schreibe den GET Request:
+
+
+###
+# 7. Filter by priority - LOW
+# LOSE SELBER: Schreibe den Test fur priority="low"
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# AUFGABE 3: Kombinierte Filter implementieren + TEST SCHREIBEN
+# ============================================
+###
+
+###
+# 8. Filter by status AND priority
+# LOSE SELBER:
+#   1. Implementiere Kombination von mehreren Query-Parametern
+#   2. Schreibe diesen Test:
+#      - GET an /api/tasks?status=pending&priority=high
+#      - Erwartet: Nur Tasks mit status="pending" UND priority="high"
+# TODO: Schreibe den GET Request mit beiden Parametern:
+
+
+###
+# 9. Filter by status AND priority (other combination)
+# LOSE SELBER: Schreibe einen weiteren kombinierten Filter Test
+# Idee: ?status=in_progress&priority=medium
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# BONUS: Suche implementieren
+# ============================================
+###
+
+###
+# 10. Search in title and description
+# LOSE SELBER:
+#   1. Implementiere Suche mit ?search= Parameter
+#   2. Suche sollte in title und description Feldern suchen
+#   3. Schreibe diesen Test:
+#      - GET an /api/tasks?search=API
+#      - Erwartet: Tasks die "API" im Titel oder Beschreibung haben
+# TODO: Schreibe den GET Request:
+
+
+###
+# 11. Search with no results
+# LOSE SELBER: Teste Suche die keine Ergebnisse liefert
+# Idee: Suche nach einem Wort das in keinem Task vorkommt
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# BONUS: Kombination aus Filter und Suche
+# ============================================
+
+###
+# 12. Filter AND Search combined
+# LOSE SELBER: Kombiniere Filter mit Suche
+# Idee: ?status=pending&search=docs
+# TODO: Schreibe den GET Request:
+
+
+###
+# ============================================
+# VALIDATION (Feature 2) - funktioniert weiterhin
+# ============================================
+
+###
+# 13. POST with validation
+# Bereits implementiert - dient als Referenz
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Neuer Task",
+  "description": "Dieser Task hat eine Beschreibung",
+  "status": "pending",
+  "priority": "low"
+}

@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:3001
+
+###############################################
+# Task Management API - Feature 1: Basics
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# 1. Get all tasks
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# 3. Get non-existent task
+# Erwartet: 404 Not Found
+GET {{baseUrl}}/api/tasks/non-existent
+
+###
+# 4. Create a new task (POST)
+# LÖSUNG:
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New Task",
+  "description": "This is a new task",
+  "priority": "high"
+}
+# Erwartet: 201 Created mit neuem Task inkl. uuid, status="pending"
+
+###
+# 5. Create task without title
+# Testet: Was passiert ohne Pflichtfeld?
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+
+{
+  "description": "Missing title"
+}
+# Hinweis: Validation kommt in feature-2
+# Aktuell: SQLite NOT NULL Constraint oder 500 Error
+
+###
+# 6. Update task status (PUT)
+# LÖSUNG:
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK mit aktualisiertem Task
+
+###
+# 7. Update task with multiple fields
+# LÖSUNG:
+PUT {{baseUrl}}/api/tasks/task-2
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "status": "in_progress",
+  "priority": "low"
+}
+# Erwartet: 200 OK
+
+###
+# 8. Update non-existent task
+# Erwartet: 404 Not Found
+PUT {{baseUrl}}/api/tasks/non-existent-id
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+
+###
+# 9. Delete a task (DELETE)
+# LÖSUNG:
+DELETE {{baseUrl}}/api/tasks/task-3
+# Erwartet: 204 No Content
+
+###
+# 10. Delete non-existent task
+# Erwartet: 404 Not Found
+DELETE {{baseUrl}}/api/tasks/non-existent-id
+
+###
+# 11. Update with empty body
+# Testet: Was passiert bei PUT ohne Felder?
+PUT {{baseUrl}}/api/tasks/task-1
+Content-Type: application/json
+
+{}
+# Erwartet: 400 Bad Request ("No fields to update")
+
+###
+# Bonus: Test mit curl
+# curl -X POST http://localhost:3001/api/tasks -H "Content-Type: application/json" -d '{"title":"Bonus","description":"Test"}'

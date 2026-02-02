@@ -1,0 +1,40 @@
+{
+  "name": "Task API - Feature 2: Validation (C#)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/feature-2-validation",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/feature-2-validation,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "humao.rest-client",
+        "ms-dotnettools.csdevkit",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "files.associations": {
+          "*.http": "http"
+        },
+        "rest-client.environmentVariables": {
+          "baseUrl": "http://localhost:3002"
+        },
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "portsAttributes": [
+    {
+      "port": 3002,
+      "label": "Task API - Feature 2 C#",
+      "onAutoForward": "notify"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

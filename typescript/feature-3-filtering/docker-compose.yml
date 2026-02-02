@@ -1,0 +1,21 @@
+services:
+  task-api-filtering:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-filtering
+    ports:
+      - "3003:3000"
+    volumes:
+      - .:/workspaces/feature-3-filtering
+      - node_modules:/workspaces/feature-3-filtering/node_modules
+    working_dir: /workspaces/feature-3-filtering
+    command: sh -c "npm install && npm run dev"
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+
+networks:
+  default:
+    name: restws-network

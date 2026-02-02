@@ -1,0 +1,17 @@
+services:
+  task-api-complete-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api-complete-php
+    ports:
+      - "3006:3000"
+    volumes:
+      - .:/workspaces/feature-complete
+    working_dir: /workspaces/feature-complete
+    command: php -S 0.0.0.0:3000 index.php
+    restart: unless-stopped
+
+networks:
+  default:
+    name: restws-network

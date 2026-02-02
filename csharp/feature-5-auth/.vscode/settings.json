@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.http": "http"
+  },
+  "rest-client.environmentVariables": {
+    "baseUrl": "http://localhost:3005"
+  },
+  "editor.formatOnSave": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+  "omnisharp.enableEditorConfigSupport": true
+}

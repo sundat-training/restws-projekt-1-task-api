@@ -1,0 +1,182 @@
+@baseUrl = http://localhost:3005
+
+###############################################
+# Task Management API - Feature 5: Authentication (C#)
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# LÖSUNG: Login
+# ============================================
+###
+
+###
+# 1. Login als alice - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK
+# {
+#   "userId": "user-1",
+#   "username": "alice"
+# }
+
+###
+# 2. Login als bob - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "password456"
+}
+# Erwartet: 200 OK
+
+###
+# 3. Login mit falschen Credentials - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "falschesPasswort"
+}
+# Erwartet: 401 Unauthorized
+# { "error": "Invalid credentials" }
+
+###
+# ============================================
+# LÖSUNG: Auth Middleware
+# ============================================
+###
+
+###
+# 4. GET /api/tasks ohne Auth - LÖSUNG
+GET {{baseUrl}}/api/tasks
+# Erwartet: 401 Unauthorized
+# { "error": "Authentication required" }
+
+###
+# 5. GET /api/tasks mit Auth (alice) - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+# Erwartet: 200 OK mit Alice' Tasks
+
+###
+# 6. GET /api/tasks mit Auth (bob) - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+# Erwartet: 200 OK mit Bob's Tasks
+
+###
+# ============================================
+# LÖSUNG: User-Isolation
+# ============================================
+###
+
+###
+# 7. Alice sieht nur ihre Tasks - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+# Erwartet: 3 Tasks (task-1, 2, 3)
+
+###
+# 8. Bob sieht nur seine Tasks - LÖSUNG
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+# Erwartet: 2 Tasks (task-4, 5)
+
+###
+# ============================================
+# LÖSUNG: Autorisierung (PUT/DELETE)
+# ============================================
+###
+
+###
+# 9. Bob versucht Alice' Task zu ändern (FORBIDDEN) - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-2
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 403 Forbidden
+# { "error": "Not authorized to modify this task" }
+
+###
+# 10. Alice versucht Bob's Task zu löschen (FORBIDDEN) - LÖSUNG
+DELETE {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+# Erwartet: 403 Forbidden
+
+###
+# 11. Alice ändert ihren eigenen Task (OK) - LÖSUNG
+PUT {{baseUrl}}/api/tasks/task-1
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+# Erwartet: 200 OK
+
+###
+# ============================================
+# LÖSUNG: POST mit User-Zuordnung
+# ============================================
+###
+
+###
+# 12. Create Task als Alice - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-1
+Content-Type: application/json
+
+{
+  "title": "Alice's New Task",
+  "description": "This task belongs to Alice",
+  "priority": "high"
+}
+# Erwartet: 201 Created mit userId: "user-1"
+
+###
+# 13. Create Task als Bob - LÖSUNG
+POST {{baseUrl}}/api/tasks
+Authorization: Bearer user-2
+Content-Type: application/json
+
+{
+  "title": "Bob's New Task",
+  "description": "This task belongs to Bob",
+  "priority": "medium"
+}
+# Erwartet: 201 Created mit userId: "user-2"
+
+###
+# ============================================
+# REFERENZ
+# ============================================
+###
+
+###
+# 14. Login Endpunkt (öffentlich) - LÖSUNG
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "password123"
+}
+# Erwartet: 200 OK
+
+###
+# 15. GET fremder Task (FORBIDDEN) - LÖSUNG
+GET {{baseUrl}}/api/tasks/task-4
+Authorization: Bearer user-1
+# Erwartet: 403 Forbidden

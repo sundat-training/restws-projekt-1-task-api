@@ -1,0 +1,128 @@
+@baseUrl = http://localhost:3004
+
+###############################################
+# Task Management API - Feature 4: Pagination
+# VOLLSTÄNDIGE LÖSUNGEN
+###############################################
+
+###
+# ============================================
+# BEREITS IMPLEMENTIERT - Referenz
+# ============================================
+###
+
+###
+# 1. Get all tasks (no pagination params)
+# Bereits implementiert mit Filterung - dient als Referenz
+# Sollte alle 15 Tasks zurueckgeben (ohne Pagination Wrapper)
+GET {{baseUrl}}/api/tasks
+
+###
+# 2. Get single task by ID
+# Bereits implementiert - dient als Referenz
+GET {{baseUrl}}/api/tasks/task-1
+
+###
+# ============================================
+# LÖSUNG: Pagination implementieren
+# ============================================
+###
+
+###
+# 3. Get tasks with default pagination
+# LÖSUNG: Default Pagination (page=1, limit=10)
+GET {{baseUrl}}/api/tasks
+# Erwartet: Response mit "data" Array (alle 15 Tasks) und "pagination" Objekt
+# pagination.page = 1, pagination.limit = 10, pagination.totalItems = 15
+
+###
+# 4. Get first page with limit=5
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=1&limit=5
+# Erwartet: 5 Tasks (task-1 bis task-5), page=1, totalPages=3
+
+###
+# ============================================
+# LÖSUNG: Seitennavigation
+# ============================================
+###
+
+###
+# 5. Get second page
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=2&limit=5
+# Erwartet: 5 Tasks (task-6 bis task-10), page=2
+
+###
+# 6. Get third page (last page)
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=3&limit=5
+# Erwartet: 5 Tasks (task-11 bis task-15), page=3
+
+###
+# ============================================
+# LÖSUNG: Pagination mit Filter kombinieren
+# ============================================
+###
+
+###
+# 7. Filter AND Pagination combined
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?status=pending&page=1&limit=3
+# Erwartet: Nur pending Tasks (task-3, task-4, task-6, task-7, task-12, task-13, task-14)
+#           Erste 3 Tasks auf Seite 1
+
+###
+# 8. Search AND Pagination combined
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?search=API&page=1&limit=2
+# Erwartet: Tasks die "API" enthalten, paginiert
+
+###
+# ============================================
+# LÖSUNG: Validierung und Randfaelle
+# ============================================
+###
+
+###
+# 9. Pagination with invalid page (page=0)
+# LÖSUNG: page=0 sollte als page=1 behandelt werden
+GET {{baseUrl}}/api/tasks?page=0&limit=5
+# Erwartet: Identisch mit page=1
+
+###
+# 10. Pagination with negative page
+# LÖSUNG: Negative page sollte als page=1 behandelt werden
+GET {{baseUrl}}/api/tasks?page=-1&limit=5
+# Erwartet: Identisch mit page=1
+
+###
+# 11. Pagination with limit exceeding total
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=1&limit=100
+# Erwartet: Alle 15 Tasks auf einer Seite, totalPages=1
+
+###
+# ============================================
+# LÖSUNG: hasNextPage / hasPreviousPage
+# ============================================
+###
+
+###
+# 12. Verify hasNextPage on page 1
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=1&limit=5
+# Erwartet: hasPreviousPage=false, hasNextPage=true
+
+###
+# 13. Verify hasPreviousPage on page 2+
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?page=2&limit=5
+# Erwartet: hasPreviousPage=true, hasNextPage=true
+
+###
+# 14. Empty result set with pagination
+# LÖSUNG:
+GET {{baseUrl}}/api/tasks?search=nonexistentxyz&page=1&limit=5
+# Erwartet: data=[], pagination mit totalItems=0
+
