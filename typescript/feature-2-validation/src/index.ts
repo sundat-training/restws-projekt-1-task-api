@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import { body, validationResult } from 'express-validator';
 
 const app: Application = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 const dbPath = path.join(__dirname, '../task-api.db');
 
 app.use(express.json());
